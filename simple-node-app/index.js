@@ -1,5 +1,6 @@
 const express = require('express')
 const connectToMongoDb = require('./db')
+require('dotenv').config()
 
 // Database Connection 
 connectToMongoDb()
@@ -7,7 +8,7 @@ connectToMongoDb()
 let app = express()
 
 app.get("/", (req, res) => {
-    res.send("<h2>Hello World!!!!</h2>")
+    res.send("<h2>Hello World</h2>")
 })
 
 const port = process.env.PORT || 3000

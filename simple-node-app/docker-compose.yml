@@ -8,9 +8,11 @@ services:
       - "3000:3000"
     environment:
       - PORT=3000
+    depends_on:
+      - mongo
   
   # Mongo DB Container
-  mongo-app-db:
+  mongo:
     image: mongo
     env_file:
       - ./.env
