@@ -1,0 +1,18 @@
+version: '3'
+services:
+  simple-app:
+    build: 
+      context: .
+      args:
+        NODE_ENV: development
+    volumes:
+      - ./:/app:ro
+      - /app/node_modules
+    env_file:
+      - ./.env
+    command: npm run dev
+  
+  mongo:
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=burhan
+      - MONGO_INITDB_ROOT_PASSWORD=mypassword

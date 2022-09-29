@@ -1,0 +1,15 @@
+version: '3'
+services:
+  simple-app:
+    build: 
+      context: .
+      args:
+        NODE_ENV: production
+    environment:
+      - NODE_ENV=production
+    command: node index.js
+  
+  mongo:
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=burhan
+      - MONGO_INITDB_ROOT_PASSWORD=mypassword
