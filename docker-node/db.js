@@ -7,7 +7,7 @@ const connectToMongo = () => {
     mongoose.connect(mongoURI, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-    }).then(() => {console.log("Successfully connected")})
+    }).then(() => {console.log("Database Successfully connected")})
     .catch((e) => {
         console.log(e)
         setTimeout(connectionRetry, 5000)

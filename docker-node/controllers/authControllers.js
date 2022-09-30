@@ -1,4 +1,4 @@
-const User = require('../models/user')
+const User = require('../models/auth')
 const bcryptjs = require('bcryptjs')
 
 
@@ -47,13 +47,13 @@ exports.login = async (req, res, next) => {
             return res.status(404).json({ message: "User not found." })
         }
 
-        const isCorrect = await bcryptjs.compare(password, userExists.password)
+        const isCorrect = bcryptjs.compare(password, userExists.password)
 
         if (!isCorrect) {
-            return res.status(406).json({ message: "Incorrect username, email or password." })
+            return res.status(404).json({ message: "Incorrect username, email or password." })
         }
 
-        res.status(202).json({
+        res.status(201).json({
             status: "Success",
             message: "User successfully logged in."
         })
