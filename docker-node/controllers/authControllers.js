@@ -13,7 +13,7 @@ exports.signUp = async (req, res, next) => {
             return res.status(400).json({ message: "User already exists." })
         }
 
-        const salt = await bcryptjs.genSalt(12)
+        const salt = await bcryptjs.genSalt(10)
         const securePass = await bcryptjs.hash(password, salt)
 
 
