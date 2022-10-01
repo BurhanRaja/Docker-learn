@@ -4,9 +4,9 @@ const bcryptjs = require('bcryptjs')
 
 exports.signUp = async (req, res, next) => {
 
-    try {
-        const { username, email, password } = req.body
+    const { username, email, password } = req.body
 
+    try {
         const userExists = await User.findOne({ email: email })
 
         if (userExists) {
@@ -23,6 +23,7 @@ exports.signUp = async (req, res, next) => {
             password: securePass
         })
 
+        req.session.user = user
         res.status(201).json({
             status: "Success",
             message: "User successfully created."
@@ -32,15 +33,15 @@ exports.signUp = async (req, res, next) => {
         console.log(e)
         res.status(500).json({
             status: "Fail",
-            message: "Some Error Occured"
+            message: "Some Error Occurred"
         })
     }
 }
 
 exports.login = async (req, res, next) => {
-    try {
-        const { email, password } = req.body
+    const { email, password } = req.body
 
+    try {
         const userExists = await User.findOne({ email: email })
 
         if (!userExists) {
@@ -49,20 +50,22 @@ exports.login = async (req, res, next) => {
 
         const isCorrect = bcryptjs.compare(password, userExists.password)
 
-        if (!isCorrect) {
+        if (isCorrect) {
+            req.session.user = userExists
+            return res.status(201).json({
+                status: "Success",
+                message: "User successfully logged in."
+            })
+        }
+        else {
             return res.status(404).json({ message: "Incorrect username, email or password." })
         }
-
-        res.status(201).json({
-            status: "Success",
-            message: "User successfully logged in."
-        })
 
     } catch (e) {
         console.log(e)
         res.status(500).json({
             status: "Fail",
-            message: "Some Error Occured"
+            message: "Some Error Occurred"
         })
     }
 }

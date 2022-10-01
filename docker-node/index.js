@@ -1,18 +1,39 @@
 const express = require('express')
-const connectMongo = require('./db')
+const connectMongo = require('./mongo-db')
 const postRouter = require('./routes/postRoutes')
 const authRouter = require('./routes/authRoutes')
+const session = require("express-session");
+const { redisClient } = require('./redis-db');
+const { SESSION_SECRET } = require('./config/config');
+let RedisStore = require("connect-redis")(session);
 
 const app = express()
 const port = 3000
 
 connectMongo()
 
+// Redis session
+redisClient.connect().catch(console.error)
+
+app.use(
+    session({
+        store: new RedisStore({ client: redisClient }),
+        secret: SESSION_SECRET,
+        cookie: {
+            secure: false,
+            resave: false,
+            saveUninitialized: false,
+            httpOnly: true,
+            maxAge: 3600000, // 1 hour
+        },
+    })
+);
+
+app.use(express.json())
+
 app.get('/', (req, res) => {
     res.send('<h2>Hello World!</h2>')
 })
-
-app.use(express.json())
 
 app.use("/api/v1/posts", postRouter)
 app.use("/api/v1/user", authRouter)
