@@ -13,10 +13,9 @@ const port = 3000
 connectMongo()
 
 // Redis session
-redisClient.connect().catch(console.error)
+redisClient.connect().then(() => {console.log("RedisDB Successfully Connected!")}).catch(console.error)
 
-app.use(
-    session({
+app.use(session({
         store: new RedisStore({ client: redisClient }),
         secret: SESSION_SECRET,
         cookie: {
@@ -24,10 +23,9 @@ app.use(
             resave: false,
             saveUninitialized: false,
             httpOnly: true,
-            maxAge: 3600000, // 1 hour
-        },
-    })
-);
+            maxAge: 30000, // 1 hour
+        }})
+)
 
 app.use(express.json())
 
