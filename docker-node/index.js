@@ -12,9 +12,11 @@ const port = 3000
 
 connectMongo()
 
+
 // Redis session
 redisClient.connect().then(() => {console.log("RedisDB Successfully Connected!")}).catch(console.error)
 
+app.enable("trust proxy")
 app.use(session({
         store: new RedisStore({ client: redisClient }),
         secret: SESSION_SECRET,
@@ -29,8 +31,9 @@ app.use(session({
 
 app.use(express.json())
 
-app.get('/', (req, res) => {
+app.get('/api/v1', (req, res) => {
     res.send('<h2>Hello World!</h2>')
+    console.log("Yeah it ran!")
 })
 
 app.use("/api/v1/posts", postRouter)
