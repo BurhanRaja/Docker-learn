@@ -1,15 +1,19 @@
 # Docker-learn
 
+## Volume
+
+Volume allows us to share data between host & container and also between containers.
+
 ## Docker CLI Commands
 
 To Pull the image from the docker hub registry into our local cache :- 
 ``` 
-docker pull [imageName] 
+docker pull [imageName]:tag
 ```
 
 To run a container :- 
 ``` 
-docker run [imageName] 
+docker run [imageName]:tag
 ```
 
 To run a container in detached mode (in background) :- 
@@ -34,12 +38,24 @@ docker ps -a
 
 Stop a Container :- 
 ``` 
-docker stop [containerName] 
+docker stop [containerId] 
 ```
 
 Kill a Container :- 
 ``` 
 docker kill [containerName] 
+```
+
+Exposing Container to Port:-
+
+```
+docker run -d -p 8080:80 [imageName]
+```
+
+Exposing Container to Multiple Ports:-
+
+```
+docker run -d -p 3000:80 -p 8080:80 [imageName]
 ```
 
 Get image info :- 
